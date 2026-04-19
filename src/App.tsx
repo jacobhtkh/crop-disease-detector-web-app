@@ -107,7 +107,6 @@ export default function UploadImage() {
             Supported crops:
           </p>
           <ul className='list-disc list-inside text-gray-600 text-sm space-y-1'>
-            <li>Sugarcane</li>
             <li>Corn</li>
             <li>Potato</li>
             <li>Rice</li>

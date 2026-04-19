@@ -76,18 +76,18 @@ export default function UploadImage() {
       setLoading(true);
       setMessage('');
 
-      const res = await fetch('http://localhost:8000/upload', {
+      const res = await fetch('http://localhost:8000/classify?top_k=5', {
         method: 'POST',
         body: formData,
       });
 
-      if (!res.ok) throw new Error('Upload failed');
+      if (!res.ok) throw new Error('Classification failed');
 
       const data = await res.json();
-      setMessage(`Uploaded: ${data.filename}`);
+      setMessage(JSON.stringify(data, null, 2));
     } catch (err) {
       console.error(err);
-      setMessage('Upload failed.');
+      setMessage('Classification failed.');
     } finally {
       setLoading(false);
     }
@@ -95,11 +95,10 @@ export default function UploadImage() {
 
   return (
     <div className='min-h-screen bg-gray-50 p-6 flex flex-col items-center justify-center'>
-      <h1 className='text-3xl font-bold text-gray-800 mb-6 text-center'>
-        Crop Disease Detector
-      </h1>
-
       <div className='w-full max-w-xl bg-white rounded-2xl shadow-md p-6'>
+        <h1 className='text-3xl font-bold text-gray-800 mb-6 text-center'>
+          Crop Disease Detector
+        </h1>
         <div className='mb-6'>
           <p className='text-gray-600 mb-3'>
             This will allow you to check if your crop has a disease.
@@ -168,7 +167,7 @@ export default function UploadImage() {
 
         {/* PREVIEWS GRID */}
         {previews.length > 0 && (
-          <div className='grid grid-cols-3 gap-3 mb-4'>
+          <div className='grid grid-cols-2 gap-3 mb-4'>
             {previews.map((src, i) => (
               <img
                 key={i}
@@ -186,7 +185,7 @@ export default function UploadImage() {
           className='w-full py-2 px-4 rounded-xl bg-green-600 text-white font-semibold
             hover:bg-green-700 transition disabled:opacity-50'
         >
-          {loading ? 'Uploading...' : 'Upload Images'}
+          {loading ? 'Analyzing...' : 'Analyze Images'}
         </button>
 
         {message && (

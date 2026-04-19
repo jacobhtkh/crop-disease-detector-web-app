@@ -1,14 +1,19 @@
 import { useRef, useState } from 'react';
 
+const MAX_FILES = 6;
+
 export default function UploadImage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [atLimit, setAtLimit] = useState(false);
 
   const handleChange = (e) => {
     const selectedFiles: File[] = Array.from(e.target.files || []);
+
+    if (inputRef.current) inputRef.current.value = '';
 
     if (selectedFiles.length === 0) return;
 
@@ -20,18 +25,37 @@ export default function UploadImage() {
       setMessage('Some files were not valid images.');
     }
 
-    setFiles((prev) => [...prev, ...validFiles]);
-    setPreviews((prev) => [
-      ...prev,
-      ...validFiles.map((file) => URL.createObjectURL(file)),
-    ]);
+    setFiles((prev) => {
+      const remaining = MAX_FILES - prev.length;
+      if (remaining <= 0) {
+        setAtLimit(true);
+        return prev;
+      }
+      const filesToAdd = validFiles.slice(0, remaining);
+      const newFiles = [...prev, ...filesToAdd];
+      if (newFiles.length >= MAX_FILES) setAtLimit(true);
+      return newFiles;
+    });
 
-    if (inputRef.current) inputRef.current.value = '';
+    setPreviews((prev) => {
+      const remaining = MAX_FILES - prev.length;
+      if (remaining <= 0) return prev;
+      return [
+        ...prev,
+        ...validFiles
+          .slice(0, remaining)
+          .map((file) => URL.createObjectURL(file)),
+      ];
+    });
   };
 
   const handleRemove = (index: number) => {
     URL.revokeObjectURL(previews[index]);
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      if (updated.length < MAX_FILES) setAtLimit(false);
+      return updated;
+    });
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -97,7 +121,8 @@ export default function UploadImage() {
           <button
             type='button'
             onClick={() => inputRef.current?.click()}
-            className='py-2 px-4 rounded-lg bg-green-100 text-green-700 text-sm hover:bg-green-200'
+            className='py-2 px-4 rounded-lg bg-green-100 text-green-700 text-sm hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-100'
+            disabled={atLimit}
           >
             Choose Files
           </button>
@@ -114,11 +139,21 @@ export default function UploadImage() {
           />
         </div>
 
+        {atLimit && (
+          <p className='mb-4 text-sm text-center text-amber-600 bg-amber-50 rounded-lg py-2 px-3'>
+            You can only add up to {MAX_FILES} photos at a time. Remove a photo
+            to add more.
+          </p>
+        )}
+
         {/* FILE NAME LIST */}
         {files.length > 0 && (
           <ul className='mb-4 space-y-2'>
             {files.map((file, i) => (
-              <li key={i} className='flex items-center justify-between text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2'>
+              <li
+                key={i}
+                className='flex items-center justify-between text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2'
+              >
                 <span className='truncate mr-2'>{file.name}</span>
                 <button
                   onClick={() => handleRemove(i)}

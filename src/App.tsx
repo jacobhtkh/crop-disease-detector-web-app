@@ -2,6 +2,18 @@ import { useRef, useState } from 'react';
 
 const MAX_FILES = 6;
 
+type Prediction = { label: string; score: number };
+
+type ImageResult = {
+  filename: string;
+  cropInImage?: string;
+  predictions: Prediction[];
+};
+
+function formatLabel(label: string) {
+  return label.replace(/___/g, ' — ').replace(/_/g, ' ');
+}
+
 export default function UploadImage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState([]);
@@ -9,6 +21,7 @@ export default function UploadImage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [atLimit, setAtLimit] = useState(false);
+  const [results, setResults] = useState<ImageResult[]>([]);
 
   const handleChange = (e) => {
     const selectedFiles: File[] = Array.from(e.target.files || []);
@@ -18,6 +31,7 @@ export default function UploadImage() {
     if (selectedFiles.length === 0) return;
 
     setMessage('');
+    setResults([]);
 
     const validFiles = selectedFiles.filter((file) =>
       file.type.startsWith('image/'),
@@ -54,6 +68,7 @@ export default function UploadImage() {
   const handleRemove = (index: number) => {
     URL.revokeObjectURL(previews[index]);
     setMessage('');
+    setResults([]);
     setFiles((prev) => {
       const updated = prev.filter((_, i) => i !== index);
       if (updated.length < MAX_FILES) setAtLimit(false);
@@ -78,6 +93,7 @@ export default function UploadImage() {
     try {
       setLoading(true);
       setMessage('');
+      setResults([]);
 
       const res = await fetch('http://localhost:8000/classify?top_k=5', {
         method: 'POST',
@@ -86,8 +102,8 @@ export default function UploadImage() {
 
       if (!res.ok) throw new Error('Classification failed');
 
-      const data = await res.json();
-      setMessage(JSON.stringify(data, null, 2));
+      const data: { results: ImageResult[] } = await res.json();
+      setResults(data.results);
     } catch (err) {
       console.error(err);
       setMessage('Classification failed.');
@@ -192,6 +208,45 @@ export default function UploadImage() {
 
         {message && (
           <p className='mt-4 text-sm text-center text-gray-700'>{message}</p>
+        )}
+
+        {/* RESULTS */}
+        {results.length > 0 && (
+          <div className='mt-6 space-y-4'>
+            {results.map((result, i) => (
+              <div key={i} className='border rounded-xl p-4 bg-gray-50'>
+                {previews[i] && (
+                  <img
+                    src={previews[i]}
+                    alt={result.filename}
+                    className='w-full h-40 object-cover rounded-lg mb-3'
+                  />
+                )}
+                <p className='text-sm font-semibold text-gray-800 truncate mb-1'>
+                  {result.filename}
+                </p>
+                <p className='text-xs text-gray-500 mb-3 capitalize'>
+                  Crop detected: {result.cropInImage || 'N/A'}
+                </p>
+                <ul className='space-y-2'>
+                  {result.predictions.map((pred, j) => (
+                    <li key={j}>
+                      <div className='flex justify-between text-xs text-gray-700 mb-1'>
+                        <span>{formatLabel(pred.label)}</span>
+                        <span>{(pred.score * 100).toFixed(1)}%</span>
+                      </div>
+                      <div className='w-full bg-gray-200 rounded-full h-1.5'>
+                        <div
+                          className='bg-green-500 h-1.5 rounded-full'
+                          style={{ width: `${(pred.score * 100).toFixed(1)}%` }}
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

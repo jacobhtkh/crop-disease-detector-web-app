@@ -17,6 +17,8 @@ export default function UploadImage() {
 
     if (selectedFiles.length === 0) return;
 
+    setMessage('');
+
     const validFiles = selectedFiles.filter((file) =>
       file.type.startsWith('image/'),
     );
@@ -51,6 +53,7 @@ export default function UploadImage() {
 
   const handleRemove = (index: number) => {
     URL.revokeObjectURL(previews[index]);
+    setMessage('');
     setFiles((prev) => {
       const updated = prev.filter((_, i) => i !== index);
       if (updated.length < MAX_FILES) setAtLimit(false);

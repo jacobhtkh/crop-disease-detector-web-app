@@ -156,63 +156,72 @@ export default function UploadImage() {
           />
         </div>
 
-        {atLimit && (
-          <p className='mb-4 text-sm text-center text-amber-600 bg-amber-50 rounded-lg py-2 px-3'>
-            You can only add up to {MAX_FILES} photos at a time. Remove a photo
-            to add more.
-          </p>
-        )}
+        {results.length === 0 && (
+          <>
+            {atLimit && (
+              <p className='mb-4 text-sm text-center text-amber-600 bg-amber-50 rounded-lg py-2 px-3'>
+                You can only add up to {MAX_FILES} photos at a time. Remove a
+                photo to add more.
+              </p>
+            )}
 
-        {/* FILE NAME LIST */}
-        {files.length > 0 && (
-          <ul className='mb-4 space-y-2'>
-            {files.map((file, i) => (
-              <li
-                key={i}
-                className='flex items-center justify-between text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2'
-              >
-                <span className='truncate mr-2'>{file.name}</span>
-                <button
-                  onClick={() => handleRemove(i)}
-                  className='shrink-0 text-gray-400 hover:text-red-500 transition'
-                >
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+            {/* FILE NAME LIST */}
+            {files.length > 0 && (
+              <ul className='mb-4 space-y-2'>
+                {files.map((file, i) => (
+                  <li
+                    key={i}
+                    className='flex items-center justify-between text-sm text-gray-700 bg-gray-50 rounded-lg px-3 py-2'
+                  >
+                    <span className='truncate mr-2'>{file.name}</span>
+                    <button
+                      onClick={() => handleRemove(i)}
+                      className='shrink-0 text-gray-400 hover:text-red-500 transition'
+                    >
+                      ✕
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
 
-        {/* PREVIEWS GRID */}
-        {previews.length > 0 && (
-          <div className='grid grid-cols-2 gap-3 mb-4'>
-            {previews.map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt='preview'
-                className='w-full h-28 object-cover rounded-lg border'
-              />
-            ))}
-          </div>
-        )}
+            {/* PREVIEWS GRID */}
+            {previews.length > 0 && (
+              <div className='grid grid-cols-2 gap-3 mb-4'>
+                {previews.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt='preview'
+                    className='w-full h-28 object-cover rounded-lg border'
+                  />
+                ))}
+              </div>
+            )}
 
-        <button
-          onClick={handleUpload}
-          disabled={loading}
-          className='w-full py-2 px-4 rounded-xl bg-green-600 text-white font-semibold
-            hover:bg-green-700 transition disabled:opacity-50'
-        >
-          {loading ? 'Analyzing...' : 'Analyze Images'}
-        </button>
+            <button
+              onClick={handleUpload}
+              disabled={loading}
+              className='w-full py-2 px-4 rounded-xl bg-green-600 text-white font-semibold
+                hover:bg-green-700 transition disabled:opacity-50'
+            >
+              {loading ? 'Analyzing...' : 'Analyze Images'}
+            </button>
 
-        {message && (
-          <p className='mt-4 text-sm text-center text-gray-700'>{message}</p>
+            {message && (
+              <p className='mt-4 text-sm text-center text-gray-700'>
+                {message}
+              </p>
+            )}
+          </>
         )}
 
         {/* RESULTS */}
         {results.length > 0 && (
           <div className='mt-6 space-y-4'>
+            <h2 className='text-lg font-semibold text-gray-800 text-center'>
+              Analysis Results
+            </h2>
             {results.map((result, i) => (
               <div key={i} className='border rounded-xl p-4 bg-gray-50'>
                 {previews[i] && (
@@ -225,8 +234,11 @@ export default function UploadImage() {
                 <p className='text-sm font-semibold text-gray-800 truncate mb-1'>
                   {result.filename}
                 </p>
-                <p className='text-xs text-gray-500 mb-3 capitalize'>
+                <p className='text-xs text-gray-500 mb-6 capitalize'>
                   Crop detected: {result.cropInImage || 'N/A'}
+                </p>
+                <p className='text-sm font-semibold text-gray-800 truncate mb-1'>
+                  Diagnosis (Likelihood)
                 </p>
                 <ul className='space-y-2'>
                   {result.predictions.map((pred, j) => (

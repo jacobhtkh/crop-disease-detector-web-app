@@ -1,21 +1,11 @@
 import { useRef, useState } from 'react';
+import type { ImageResult } from './types';
+import { PreviewGrid } from './components/PreviewGrid';
+import { ResultCard } from './components/ResultCard';
 
 const MAX_FILES = 6;
 
-type Prediction = { label: string; score: number };
-
-type ImageResult = {
-  filename: string;
-  cropInImage?: string;
-  predictions: Prediction[];
-  previewUrl: string;
-};
-
-function formatLabel(label: string) {
-  return label.replace(/___/g, ' — ').replace(/_/g, ' ');
-}
-
-export default function UploadImage() {
+export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -125,13 +115,13 @@ export default function UploadImage() {
       const data: { results: Omit<ImageResult, 'previewUrl'>[] } =
         await res.json();
 
-      const enrichedResults: ImageResult[] = data.results.map((r, i) => ({
+      const resultsWithPreviewUrl: ImageResult[] = data.results.map((r, i) => ({
         ...r,
         previewUrl: previews[i],
       }));
 
       resetUploadState();
-      setResults(enrichedResults);
+      setResults(resultsWithPreviewUrl);
     } catch (err) {
       console.error(err);
       setMessage(err.message);
@@ -199,34 +189,11 @@ export default function UploadImage() {
               </p>
             )}
 
-            {/* PREVIEWS GRID WITH FILENAMES */}
-            {previews.length > 0 && (
-              <div className='grid grid-cols-2 gap-3 mb-4'>
-                {previews.map((src, i) => (
-                  <div
-                    key={i}
-                    className='overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm'
-                  >
-                    <div className='relative'>
-                      <img
-                        src={src}
-                        alt='preview'
-                        className='w-full h-32 object-cover'
-                      />
-                      <button
-                        onClick={() => handleRemove(i)}
-                        className='absolute top-1.5 right-1.5 bg-white rounded-full w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 shadow transition text-xs'
-                      >
-                        ✕
-                      </button>
-                    </div>
-                    <p className='px-3 py-2 text-sm text-gray-500 truncate'>
-                      {files[i]?.name}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+            <PreviewGrid
+              previews={previews}
+              files={files}
+              onRemove={handleRemove}
+            />
 
             <button
               onClick={handleUpload}
@@ -248,69 +215,11 @@ export default function UploadImage() {
         {/* RESULTS */}
         {results.length > 0 && (
           <div className='space-y-4'>
-            <h2 className='text-lg font-semibold text-gray-800 text-center'>
+            <h2 className='text-2xl font-semibold text-gray-800 text-center'>
               Analysis Results
             </h2>
             {results.map((result, i) => (
-              <div
-                key={i}
-                className='overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm'
-              >
-                <div className='relative'>
-                  <img
-                    src={result.previewUrl}
-                    alt={result.filename}
-                    className='w-full h-48 object-cover'
-                  />
-                  {result.cropInImage && (
-                    <span className='absolute bottom-2 left-2 bg-black/50 text-white text-xs font-medium px-2 py-1 rounded-full capitalize'>
-                      {result.cropInImage}
-                    </span>
-                  )}
-                </div>
-
-                <div className='p-4'>
-                  <p className='text-sm font-medium text-gray-500 truncate mb-4'>
-                    {result.filename}
-                  </p>
-
-                  <p className='text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3'>
-                    Diagnosis (Likelihood of state of health)
-                  </p>
-
-                  {result.predictions.length === 0 && (
-                    <p className='text-sm text-gray-400'>N/A</p>
-                  )}
-                  <ul className='space-y-3'>
-                    {result.predictions.map((pred, j) => {
-                      const pct = (pred.score * 100).toFixed(1);
-                      const isTop = j === 0;
-                      return (
-                        <li key={j}>
-                          <div className='flex justify-between items-center mb-1'>
-                            <span
-                              className={`text-sm truncate mr-2 ${isTop ? 'font-semibold text-gray-900' : 'text-gray-600'}`}
-                            >
-                              {formatLabel(pred.label)}
-                            </span>
-                            <span
-                              className={`text-sm shrink-0 ${isTop ? 'font-bold text-green-600' : 'text-gray-400'}`}
-                            >
-                              {pct}%
-                            </span>
-                          </div>
-                          <div className='w-full bg-gray-100 rounded-full h-2'>
-                            <div
-                              className={`h-2 rounded-full ${isTop ? 'bg-green-500' : 'bg-gray-300'}`}
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
+              <ResultCard key={i} result={result} />
             ))}
             <button
               onClick={handleReset}
@@ -324,4 +233,4 @@ export default function UploadImage() {
       </div>
     </div>
   );
-}
+};

@@ -275,7 +275,7 @@ export default function UploadImage() {
                   </p>
 
                   <p className='text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3'>
-                    Diagnosis
+                    Diagnosis (Likelihood of state of health)
                   </p>
 
                   {result.predictions.length === 0 && (

@@ -110,7 +110,17 @@ export default function UploadImage() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error('Classification failed');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (body.error && body.limit) {
+          throw new Error(
+            `Analysis failed. Reason: ${body.error} as it is ${body.limit}`,
+          );
+        }
+        throw new Error(
+          `Analysis failed. Reason: ${body.error ?? `Error ${res.status} ${res.statusText}`}`,
+        );
+      }
 
       const data: { results: Omit<ImageResult, 'previewUrl'>[] } =
         await res.json();
@@ -124,7 +134,7 @@ export default function UploadImage() {
       setResults(enrichedResults);
     } catch (err) {
       console.error(err);
-      setMessage('Classification failed.');
+      setMessage(err.message);
     } finally {
       setLoading(false);
     }

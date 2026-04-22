@@ -228,7 +228,7 @@ export const App = () => {
               Analysis Results
             </h2>
             {results.map((result, i) => (
-              <ResultCard key={i} result={result} />
+              <ResultCard key={i} result={result} crops={crops} />
             ))}
             <button
               onClick={handleReset}

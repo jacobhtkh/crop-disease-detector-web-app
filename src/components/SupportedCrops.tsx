@@ -1,4 +1,5 @@
 import type { Crop } from '../types';
+import { InfoTooltip } from './InfoTooltip';
 
 type Props = { crops: Crop[] };
 
@@ -15,18 +16,11 @@ export const SupportedCrops = ({ crops }: Props) => (
             {conditions.map(({ name, description }) => (
               <li
                 key={name}
-                className='flex items-center gap-1.5 text-sm text-gray-500'
+                className='flex items-center gap-1 text-sm text-gray-500'
               >
                 <span className='w-1.5 h-1.5 rounded-full bg-gray-600 shrink-0' />
                 <span>{name}</span>
-                <div className='relative group inline-flex'>
-                  <span className='text-gray-400 hover:text-gray-600 cursor-default text-xs select-none'>
-                    ⓘ
-                  </span>
-                  <div className='absolute left-0 bottom-full mb-1.5 w-60 bg-gray-800 text-white text-xs rounded-lg p-2.5 hidden group-hover:block z-10 leading-relaxed shadow-lg'>
-                    {description}
-                  </div>
-                </div>
+                <InfoTooltip text={description} />
               </li>
             ))}
           </ul>

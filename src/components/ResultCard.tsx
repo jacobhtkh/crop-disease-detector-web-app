@@ -1,18 +1,20 @@
-import type { ImageResult } from '../types';
+import type { Crop, ImageResult } from '../types';
 import { PredictionBar } from '.';
+import { formatLabel } from '../helpers';
 
 type Props = {
   result: ImageResult;
+  crops: Crop[];
 };
 
-export const ResultCard = ({ result }: Props) => {
+export const ResultCard = ({ result, crops }: Props) => {
   return (
-    <div className='overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm'>
+    <div className='rounded-2xl border border-gray-100 bg-white shadow-sm'>
       <div className='relative'>
         <img
           src={result.previewUrl}
           alt={result.filename}
-          className='w-full h-48 object-cover'
+          className='w-full h-48 object-cover rounded-t-2xl'
         />
         {result.cropInImage && (
           <span className='absolute bottom-2 left-2 bg-black/50 text-white text-xs font-medium px-2 py-1 rounded-full capitalize'>
@@ -34,16 +36,25 @@ export const ResultCard = ({ result }: Props) => {
           <p className='text-sm text-gray-400'>N/A</p>
         )}
         <ul className='space-y-3'>
-          {result.predictions.map((pred, j) => (
-            <PredictionBar
-              key={j}
-              label={pred.label}
-              score={pred.score}
-              isTop={j === 0}
-            />
-          ))}
+          {result.predictions.map((pred, j) => {
+            const label = formatLabel(pred.label);
+            const cropInfo = crops.find((crop) => label.includes(crop.crop));
+            const conditionDescription = cropInfo.conditions.find((condition) =>
+              label.includes(condition.name),
+            ).description;
+
+            return (
+              <PredictionBar
+                key={j}
+                label={label}
+                score={pred.score}
+                isTop={j === 0}
+                description={conditionDescription}
+              />
+            );
+          })}
         </ul>
       </div>
     </div>
   );
-}
+};

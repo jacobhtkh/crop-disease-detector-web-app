@@ -1,20 +1,24 @@
-import { formatLabel } from '../helpers';
+import { InfoTooltip } from './InfoTooltip';
 
 type Props = {
   label: string;
   score: number;
   isTop: boolean;
+  description: string;
 };
 
-export const PredictionBar = ({ label, score, isTop }: Props) => {
+export const PredictionBar = ({ label, score, isTop, description }: Props) => {
   const pct = (score * 100).toFixed(1);
   return (
     <li>
       <div className='flex justify-between items-center mb-1'>
-        <span
-          className={`text-sm truncate mr-2 ${isTop ? 'font-semibold text-gray-900' : 'text-gray-600'}`}
-        >
-          {formatLabel(label)}
+        <span className='flex items-center gap-1 mr-2 min-w-0'>
+          <span
+            className={`text-sm truncate ${isTop ? 'font-semibold text-gray-900' : 'text-gray-600'}`}
+          >
+            {label}
+          </span>
+          {description && <InfoTooltip text={description} />}
         </span>
         <span
           className={`text-sm shrink-0 ${isTop ? 'font-bold text-green-600' : 'text-gray-400'}`}
@@ -30,4 +34,4 @@ export const PredictionBar = ({ label, score, isTop }: Props) => {
       </div>
     </li>
   );
-}
+};

@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
-import type { ImageResult } from './types';
+import { useRef, useState, useEffect } from 'react';
+import type { Crop, ImageResult } from './types';
 import { PreviewGrid, ResultCard, SupportedCrops } from './components';
 
 const MAX_FILES = 6;
+const API_URL = import.meta.env.VITE_CROP_DISEASE_DETECTOR_API_URL;
 
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -12,6 +13,21 @@ export const App = () => {
   const [message, setMessage] = useState('');
   const [atLimit, setAtLimit] = useState(false);
   const [results, setResults] = useState<ImageResult[]>([]);
+  const [crops, setCrops] = useState<Crop[]>([]);
+
+  useEffect(() => {
+    const fetchCrops = async () => {
+      try {
+        const res = await fetch(`${API_URL}/supported-crops`);
+        const data: { crops: Crop[] } = await res.json();
+        setCrops(data.crops);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCrops();
+  }, []);
 
   const resetUploadState = () => {
     setFiles([]);
@@ -94,7 +110,7 @@ export const App = () => {
       setLoading(true);
       setMessage('');
 
-      const res = await fetch('http://localhost:8000/classify?top_k=5', {
+      const res = await fetch(`${API_URL}/classify?top_k=5`, {
         method: 'POST',
         body: formData,
       });
@@ -145,7 +161,7 @@ export const App = () => {
                 Remember this is experimental and the model used has bias and
                 limitations.
               </p>
-              <SupportedCrops />
+              <SupportedCrops crops={crops} />
             </div>
 
             <div className='mb-4 flex items-center gap-3'>

@@ -4,7 +4,7 @@ type Props = {
   label: string;
   score: number;
   isTop: boolean;
-  description: string;
+  description?: string;
 };
 
 export const PredictionBar = ({ label, score, isTop, description }: Props) => {

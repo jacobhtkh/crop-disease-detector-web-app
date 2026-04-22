@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import type { ImageResult } from './types';
-import { PreviewGrid } from './components/PreviewGrid';
-import { ResultCard } from './components/ResultCard';
+import { PreviewGrid, ResultCard, SupportedCrops } from './components';
 
 const MAX_FILES = 6;
 
@@ -137,7 +136,7 @@ export const App = () => {
           Crop Disease Detector
         </h1>
 
-        {/* UPLOAD SECTION */}
+        {/* CHOOSE IMAGES FOR ANALYSIS SECTION */}
         {results.length === 0 && (
           <>
             <div className='mb-6'>
@@ -146,47 +145,7 @@ export const App = () => {
                 Remember this is experimental and the model used has bias and
                 limitations.
               </p>
-              <p className='text-sm font-medium text-gray-700 mb-3'>
-                Supported crops and conditions:
-              </p>
-              <ul className='space-y-3'>
-                {[
-                  {
-                    crop: 'Corn',
-                    conditions: [
-                      'Common Rust',
-                      'Gray Leaf Spot',
-                      'Leaf Blight',
-                      'Healthy',
-                    ],
-                  },
-                  {
-                    crop: 'Potato',
-                    conditions: ['Early Blight', 'Late Blight', 'Healthy'],
-                  },
-                  {
-                    crop: 'Rice',
-                    conditions: ['Brown Spot', 'Leaf Blast', 'Healthy'],
-                  },
-                  {
-                    crop: 'Wheat',
-                    conditions: ['Brown Rust', 'Yellow Rust', 'Healthy'],
-                  },
-                ].map(({ crop, conditions }) => (
-                  <li key={crop}>
-                    <p className='text-sm font-semibold text-gray-700 mb-1'>
-                      {crop}
-                    </p>
-                    <ul className='list-disc list-inside space-y-0.5'>
-                      {conditions.map((condition) => (
-                        <li key={condition} className='text-sm text-gray-500'>
-                          {condition}
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
+              <SupportedCrops />
             </div>
 
             <div className='mb-4 flex items-center gap-3'>
@@ -232,7 +191,7 @@ export const App = () => {
             <button
               onClick={handleUpload}
               disabled={loading}
-              className='w-full mt-2 py-4 px-4 rounded-xl bg-green-600 text-white text-lg font-semibold
+              className='w-full mt-2 py-3 px-4 rounded-xl bg-green-600 text-white text-base font-semibold
                 hover:bg-green-700 transition disabled:opacity-50'
             >
               {loading ? 'Analyzing...' : 'Analyze Images'}
@@ -257,7 +216,7 @@ export const App = () => {
             ))}
             <button
               onClick={handleReset}
-              className='w-full mt-2 py-4 px-4 rounded-xl bg-green-600 text-white font-semibold
+              className='w-full mt-2 py-3 px-4 rounded-xl bg-green-600 text-white text-base font-semibold
                 hover:bg-green-700 transition'
             >
               Analyze More Images

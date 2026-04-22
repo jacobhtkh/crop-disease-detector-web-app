@@ -1,5 +1,5 @@
 import type { ImageResult } from '../types';
-import { PredictionBar } from './PredictionBar';
+import { PredictionBar } from '.';
 
 type Props = {
   result: ImageResult;

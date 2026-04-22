@@ -10,7 +10,3 @@ export type ImageResult = {
   predictions: Prediction[];
   previewUrl: string;
 };
-
-export function formatLabel(label: string) {
-  return label.replace(/___/g, ' — ').replace(/_/g, ' ');
-}

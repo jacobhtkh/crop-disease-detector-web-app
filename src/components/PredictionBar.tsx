@@ -1,4 +1,4 @@
-import { formatLabel } from '../types';
+import { formatLabel } from '../helpers';
 
 type Props = {
   label: string;

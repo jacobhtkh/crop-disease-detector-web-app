@@ -2,6 +2,28 @@
 
 This project is a frontend that utilises calls to an API with AI capabilities in order to estimate whether a crop image shows disease.
 
+### Supported crops and diseases
+
+| Crop   | Disease / Label |
+| ------ | --------------- |
+| Corn   | Common Rust     |
+| Corn   | Gray Leaf Spot  |
+| Corn   | Healthy         |
+| Corn   | Leaf Blight     |
+| Potato | Early Blight    |
+| Potato | Healthy         |
+| Potato | Late Blight     |
+| Rice   | Brown Spot      |
+| Rice   | Healthy         |
+| Rice   | Leaf Blast      |
+| Wheat  | Brown Rust      |
+| Wheat  | Healthy         |
+| Wheat  | Yellow Rust     |
+
+As you can see it's mostly leaf diseases covered.
+
+Images that do not match a supported crop return an `Invalid` label.
+
 ---
 
 ## Getting Started
@@ -60,9 +82,9 @@ The app calls `POST http://localhost:8000/classify?top_k=5` with a `multipart/fo
 
 **Request**
 
-| Field   | Type            | Description               |
-|---------|-----------------|---------------------------|
-| `files` | `File[]`        | One or more image files   |
+| Field   | Type            | Description                       |
+| ------- | --------------- | --------------------------------- |
+| `files` | `File[]`        | One or more image files           |
 | `top_k` | query param int | Number of predictions (default 5) |
 
 **Response**

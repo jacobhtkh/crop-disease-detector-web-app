@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_CROP_DISEASE_DETECTOR_API_URL;
 
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -36,7 +36,7 @@ export const App = () => {
     setMessage('');
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles: File[] = Array.from(e.target.files || []);
 
     if (inputRef.current) inputRef.current.value = '';
@@ -139,7 +139,7 @@ export const App = () => {
       setResults(resultsWithPreviewUrl);
     } catch (err) {
       console.error(err);
-      setMessage(err.message);
+      setMessage(err instanceof Error ? err.message : 'An error occurred.');
     } finally {
       setLoading(false);
     }

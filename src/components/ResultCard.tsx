@@ -39,9 +39,9 @@ export const ResultCard = ({ result, crops }: Props) => {
           {result.predictions.map((pred, j) => {
             const label = formatLabel(pred.label);
             const cropInfo = crops.find((crop) => label.includes(crop.crop));
-            const conditionDescription = cropInfo.conditions.find((condition) =>
-              label.includes(condition.name),
-            ).description;
+            const conditionDescription = cropInfo?.conditions.find(
+              (condition) => label.includes(condition.name),
+            )?.description;
 
             return (
               <PredictionBar

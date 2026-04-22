@@ -141,17 +141,51 @@ export const App = () => {
         {results.length === 0 && (
           <>
             <div className='mb-6'>
-              <p className='text-gray-600 mb-3'>
-                This will allow you to check if your crop has a disease.
+              <p className='text-gray-600 mb-4'>
+                Check up to {MAX_FILES} crop images for signs of disease.
+                Remember this is experimental and the model used has bias and
+                limitations.
               </p>
-              <p className='text-sm font-medium text-gray-700 mb-2'>
-                Supported crops:
+              <p className='text-sm font-medium text-gray-700 mb-3'>
+                Supported crops and conditions:
               </p>
-              <ul className='list-disc list-inside text-gray-600 text-sm space-y-1'>
-                <li>Corn</li>
-                <li>Potato</li>
-                <li>Rice</li>
-                <li>Wheat</li>
+              <ul className='space-y-3'>
+                {[
+                  {
+                    crop: 'Corn',
+                    conditions: [
+                      'Common Rust',
+                      'Gray Leaf Spot',
+                      'Leaf Blight',
+                      'Healthy',
+                    ],
+                  },
+                  {
+                    crop: 'Potato',
+                    conditions: ['Early Blight', 'Late Blight', 'Healthy'],
+                  },
+                  {
+                    crop: 'Rice',
+                    conditions: ['Brown Spot', 'Leaf Blast', 'Healthy'],
+                  },
+                  {
+                    crop: 'Wheat',
+                    conditions: ['Brown Rust', 'Yellow Rust', 'Healthy'],
+                  },
+                ].map(({ crop, conditions }) => (
+                  <li key={crop}>
+                    <p className='text-sm font-semibold text-gray-700 mb-1'>
+                      {crop}
+                    </p>
+                    <ul className='list-disc list-inside space-y-0.5'>
+                      {conditions.map((condition) => (
+                        <li key={condition} className='text-sm text-gray-500'>
+                          {condition}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
               </ul>
             </div>
 

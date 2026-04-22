@@ -1,6 +1,6 @@
 ## About
 
-This project is a frontend that utilises calls to an API with AI capabilities in order to estimate whether a crop image shows disease.
+This project is a frontend that utilises calls to an API with AI capabilities in order to estimate whether provided crop images show disease.
 
 ### Supported crops and diseases
 

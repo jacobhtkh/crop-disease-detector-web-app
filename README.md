@@ -93,11 +93,17 @@ The app calls `POST http://localhost:8000/classify?top_k=5` with a `multipart/fo
 {
   "results": [
     {
-      "filename": "corn-rust.jpg",
-      "cropInImage": "corn",
+      "filename": "green-wheat.jpeg",
+      "cropInImage": "wheat",
       "predictions": [
-        { "label": "Corn___Common_Rust", "score": 0.906 },
-        { "label": "Wheat___Brown_Rust", "score": 0.066 }
+        {
+          "label": "Wheat___Healthy",
+          "score": 0.9750185012817383
+        },
+        {
+          "label": "Wheat___Yellow_Rust",
+          "score": 0.005910073406994343
+        }
       ]
     }
   ]

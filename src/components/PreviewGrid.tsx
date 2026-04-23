@@ -1,10 +1,22 @@
+import type { Crop } from '../types';
+
 type Props = {
   previews: string[];
   files: File[];
+  selectedCropNamesForImages: string[];
+  supportedCrops: Crop[];
   onRemove: (index: number) => void;
+  onCropChange: (index: number, crop: string) => void;
 };
 
-export const PreviewGrid = ({ previews, files, onRemove }: Props) => {
+export const PreviewGrid = ({
+  previews,
+  files,
+  selectedCropNamesForImages,
+  supportedCrops,
+  onRemove,
+  onCropChange,
+}: Props) => {
   if (previews.length === 0) return null;
 
   return (
@@ -23,11 +35,23 @@ export const PreviewGrid = ({ previews, files, onRemove }: Props) => {
               ✕
             </button>
           </div>
-          <p className='px-3 py-2 text-sm text-gray-500 truncate'>
-            {files[i]?.name}
-          </p>
+          <div className='px-3 py-2 space-y-1'>
+            <p className='text-sm text-gray-500 truncate'>{files[i]?.name}</p>
+            <select
+              value={selectedCropNamesForImages[i] ?? ''}
+              onChange={(e) => onCropChange(i, e.target.value)}
+              className='w-full text-sm rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-300'
+            >
+              <option value=''>Get crop name from filename</option>
+              {supportedCrops.map((c) => (
+                <option key={c.crop} value={c.crop.toLowerCase()}>
+                  {c.crop}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       ))}
     </div>
   );
-}
+};

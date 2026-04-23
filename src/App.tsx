@@ -9,6 +9,9 @@ export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [selectedCropNamesForImages, setSelectedCropNamesForImages] = useState<
+    string[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [atLimit, setAtLimit] = useState(false);
@@ -35,6 +38,7 @@ export const App = () => {
   const resetUploadState = () => {
     setFiles([]);
     setPreviews([]);
+    setSelectedCropNamesForImages([]);
     setAtLimit(false);
     setMessage('');
   };
@@ -89,6 +93,15 @@ export const App = () => {
       return updated;
     });
     setPreviews((prev) => prev.filter((_, i) => i !== index));
+    setSelectedCropNamesForImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleCropChange = (index: number, crop: string) => {
+    setSelectedCropNamesForImages((prev) => {
+      const updated = [...prev];
+      updated[index] = crop;
+      return updated;
+    });
   };
 
   const handleReset = () => {
@@ -107,6 +120,12 @@ export const App = () => {
     // IMPORTANT: key must match FastAPI param name: "files"
     files.forEach((file) => {
       formData.append('files', file);
+    });
+    files.forEach((_, i) => {
+      formData.append(
+        'selected_crop_names_for_images',
+        selectedCropNamesForImages[i] ?? '',
+      );
     });
 
     try {
@@ -190,11 +209,6 @@ export const App = () => {
               />
             </div>
 
-            <p className='mb-6 text-sm text-gray-500'>
-              Better results if filenames have the crop in the image's name in
-              them.
-            </p>
-
             {atLimit && (
               <p className='mb-4 text-sm text-center text-amber-600 bg-amber-50 rounded-lg py-2 px-3'>
                 You can only add up to {MAX_FILES} photos at a time. Remove a
@@ -205,7 +219,10 @@ export const App = () => {
             <PreviewGrid
               previews={previews}
               files={files}
+              selectedCropNamesForImages={selectedCropNamesForImages}
+              supportedCrops={supportedCrops}
               onRemove={handleRemove}
+              onCropChange={handleCropChange}
             />
 
             <button

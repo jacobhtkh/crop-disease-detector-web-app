@@ -213,11 +213,11 @@ export const App = () => {
             >
               {loading ? (
                 <span className='flex items-center justify-center gap-2'>
-                  Analyzing
+                  Analysing
                   <Spinner />
                 </span>
               ) : (
-                'Analyze Images'
+                'Analyse Images'
               )}
             </button>
 

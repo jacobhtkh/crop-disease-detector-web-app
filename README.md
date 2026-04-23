@@ -52,7 +52,7 @@ The app will be available at `http://localhost:5173`.
 ## Usage
 
 1. Click **Choose Files** and select up to 6 crop images
-2. Click **Analyze Images** to send them to the API
+2. Click **Analyse Images** to send them to the API
 3. Results show the top 5 predictions per image with confidence scores
 
 **Supported crops:** Corn, Potato, Rice, Wheat
@@ -97,7 +97,7 @@ Called on mount to populate the supported crops list shown before analysis.
       "conditions": [
         {
           "name": "Common Rust",
-          "description": "Caused by Puccinia sorghi, producing brick-red pustules on both leaf surfaces. Spores spread northward via wind each summer and are favored by cool, humid conditions."
+          "description": "Caused by Puccinia sorghi, producing brick-red pustules on both leaf surfaces. Spores spread northward via wind each summer and are favoured by cool, humid conditions."
         },
         {
           "name": "Gray Leaf Spot",
@@ -118,7 +118,7 @@ Called on mount to populate the supported crops list shown before analysis.
       "conditions": [
         {
           "name": "Early Blight",
-          "description": "Caused by Alternaria solani, producing dark circular lesions with a concentric ring (target-like) pattern on older, lower leaves. Favored by alternating wet and dry periods."
+          "description": "Caused by Alternaria solani, producing dark circular lesions with a concentric ring (target-like) pattern on older, lower leaves. Favoured by alternating wet and dry periods."
         },
         {
           "name": "Late Blight",
@@ -135,7 +135,7 @@ Called on mount to populate the supported crops list shown before analysis.
       "conditions": [
         {
           "name": "Brown Spot",
-          "description": "Caused by Cochliobolus miyabeanus, producing oval brown spots with gray centers on leaves. Common in nutrient-deficient soils; can cause up to 45% yield loss."
+          "description": "Caused by Cochliobolus miyabeanus, producing oval brown spots with grey centres on leaves. Common in nutrient-deficient soils; can cause up to 45% yield loss."
         },
         {
           "name": "Leaf Blast",
@@ -152,7 +152,7 @@ Called on mount to populate the supported crops list shown before analysis.
       "conditions": [
         {
           "name": "Brown Rust",
-          "description": "Caused by Puccinia triticina, producing small round orange-brown pustules scattered across leaf surfaces. Wind-dispersed; high humidity and mild temperatures favor spread."
+          "description": "Caused by Puccinia triticina, producing small round orange-brown pustules scattered across leaf surfaces. Wind-dispersed; high humidity and mild temperatures favour spread."
         },
         {
           "name": "Yellow Rust",

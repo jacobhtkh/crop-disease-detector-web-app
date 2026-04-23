@@ -137,6 +137,7 @@ export const App = () => {
 
       resetUploadState();
       setResults(resultsWithPreviewUrl);
+      window.scrollTo(0, 0);
     } catch (err) {
       console.error(err);
       setMessage(err instanceof Error ? err.message : 'An error occurred.');

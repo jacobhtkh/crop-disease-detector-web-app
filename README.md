@@ -2,6 +2,8 @@
 
 This project is a frontend that utilises calls to an API with AI capabilities in order to estimate whether provided crop images show disease.
 
+Deployed at: https://crop-disease-detector-web-app-delta.vercel.app
+
 ### Supported crops and diseases
 
 | Crop   | Disease / Label |
@@ -31,7 +33,7 @@ Images that do not match a supported crop return an `Invalid` label.
 ### Prerequisites
 
 - Node.js 18+
-- The backend API running at `http://localhost:8000`
+- The backend API running at `http://localhost:8000` locally
 
 ### Install
 

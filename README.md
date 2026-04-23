@@ -54,12 +54,13 @@ The app will be available at `http://localhost:5173`.
 ## Usage
 
 1. Click **Choose Files** and select up to 6 crop images
-2. Click **Analyse Images** to send them to the API
-3. Results show the top 5 predictions per image with confidence scores
+2. For each image, optionally select a crop from the dropdown — or leave it on **Get crop name from filename** to detect it automatically
+3. Click **Analyse Images** to send them to the API
+4. Results show the top 5 predictions per image with confidence scores
 
 **Supported crops:** Corn, Potato, Rice, Wheat
 
-**Tip:** Including the crop name in the filename (e.g. `corn-field.jpg`) improves classification accuracy.
+**Tip:** When using automatic detection, include the crop name in the filename (e.g. `corn-field.jpg`) so the API can identify the crop correctly.
 
 ---
 

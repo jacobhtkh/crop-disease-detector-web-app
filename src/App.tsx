@@ -13,7 +13,7 @@ export const App = () => {
   const [message, setMessage] = useState('');
   const [atLimit, setAtLimit] = useState(false);
   const [results, setResults] = useState<ImageResult[]>([]);
-  const [crops, setCrops] = useState<Crop[]>([]);
+  const [supportedCrops, setCrops] = useState<Crop[]>([]);
   const [cropsLoading, setCropsLoading] = useState(true);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ export const App = () => {
                 Remember this is experimental and the model used has bias and
                 limitations.
               </p>
-              <SupportedCrops crops={crops} loading={cropsLoading} />
+              <SupportedCrops crops={supportedCrops} loading={cropsLoading} />
             </div>
 
             <div className='mb-4 flex items-center gap-3'>
@@ -239,7 +239,11 @@ export const App = () => {
               Analysis Results
             </h2>
             {results.map((result, i) => (
-              <ResultCard key={i} result={result} crops={crops} />
+              <ResultCard
+                key={i}
+                result={result}
+                supportedCrops={supportedCrops}
+              />
             ))}
             <button
               onClick={handleReset}

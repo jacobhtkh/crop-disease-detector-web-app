@@ -4,10 +4,10 @@ import { formatLabel } from '../helpers';
 
 type Props = {
   result: ImageResult;
-  crops: Crop[];
+  supportedCrops: Crop[];
 };
 
-export const ResultCard = ({ result, crops }: Props) => {
+export const ResultCard = ({ result, supportedCrops }: Props) => {
   return (
     <div className='rounded-2xl border border-gray-100 bg-white shadow-sm'>
       <div className='relative'>
@@ -38,7 +38,9 @@ export const ResultCard = ({ result, crops }: Props) => {
         <ul className='space-y-3'>
           {result.predictions.map((pred, j) => {
             const label = formatLabel(pred.label);
-            const cropInfo = crops.find((crop) => label.includes(crop.crop));
+            const cropInfo = supportedCrops.find((crop) =>
+              label.includes(crop.crop),
+            );
             const conditionDescription = cropInfo?.conditions.find(
               (condition) => label.includes(condition.name),
             )?.description;

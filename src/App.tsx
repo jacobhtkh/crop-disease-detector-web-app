@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import type { Crop, ImageResult } from './types';
-import { PreviewGrid, ResultCard, SupportedCrops } from './components';
+import { PreviewGrid, ResultCard, Spinner, SupportedCrops } from './components';
 
 const MAX_FILES = 6;
 const API_URL = import.meta.env.VITE_CROP_DISEASE_DETECTOR_API_URL;
@@ -211,7 +211,14 @@ export const App = () => {
               className='w-full mt-2 py-3 px-4 rounded-xl bg-green-600 text-white text-base font-semibold
                 hover:bg-green-700 transition disabled:opacity-50'
             >
-              {loading ? 'Analyzing...' : 'Analyze Images'}
+              {loading ? (
+                <span className='flex items-center justify-center gap-2'>
+                  Analyzing
+                  <Spinner />
+                </span>
+              ) : (
+                'Analyze Images'
+              )}
             </button>
 
             {message && (

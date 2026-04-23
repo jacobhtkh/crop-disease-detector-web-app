@@ -14,6 +14,7 @@ export const App = () => {
   const [atLimit, setAtLimit] = useState(false);
   const [results, setResults] = useState<ImageResult[]>([]);
   const [crops, setCrops] = useState<Crop[]>([]);
+  const [cropsLoading, setCropsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCrops = async () => {
@@ -23,6 +24,8 @@ export const App = () => {
         setCrops(data.crops);
       } catch (err) {
         console.error(err);
+      } finally {
+        setCropsLoading(false);
       }
     };
 
@@ -162,7 +165,7 @@ export const App = () => {
                 Remember this is experimental and the model used has bias and
                 limitations.
               </p>
-              <SupportedCrops crops={crops} />
+              <SupportedCrops crops={crops} loading={cropsLoading} />
             </div>
 
             <div className='mb-4 flex items-center gap-3'>

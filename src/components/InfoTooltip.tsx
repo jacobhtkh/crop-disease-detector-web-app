@@ -28,12 +28,20 @@ export const InfoTooltip = ({ text }: Props) => {
         className='text-gray-400 hover:text-gray-600 cursor-default text-xs select-none'
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => setTapped((tapped) => !tapped)}
+        onClick={(event) => {
+          if (
+            !(
+              event.nativeEvent instanceof PointerEvent &&
+              event.nativeEvent.pointerType === 'mouse'
+            )
+          )
+            setTapped((tapped) => !tapped);
+        }}
       >
         ⓘ
       </span>
       {(hovered || tapped) && (
-        <span className='absolute left-0 bottom-full mb-1.5 w-max max-w-xs bg-gray-800 text-white text-xs rounded-lg p-2.5 z-10 leading-relaxed shadow-lg'>
+        <span className='absolute left-0 bottom-full mb-1.5 w-max max-w-[55vw] sm:max-w-80 bg-gray-800 text-white text-xs rounded-lg p-2.5 z-10 leading-relaxed shadow-lg'>
           {text}
         </span>
       )}

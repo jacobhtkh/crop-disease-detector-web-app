@@ -41,7 +41,7 @@ export const InfoTooltip = ({ text }: Props) => {
         ⓘ
       </span>
       {(hovered || tapped) && (
-        <span className='absolute left-0 bottom-full mb-1.5 w-max max-w-[45vw] sm:max-w-80 bg-gray-800 text-white text-xs rounded-lg p-2.5 z-10 leading-relaxed shadow-lg'>
+        <span className='absolute left-0 bottom-full mb-1.5 w-max max-xs:max-w-[40vw] max-w-[48vw]  sm:max-w-80 bg-gray-800 text-white text-xs rounded-lg p-2.5 z-10 leading-relaxed shadow-lg'>
           {text}
         </span>
       )}

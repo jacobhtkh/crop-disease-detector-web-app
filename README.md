@@ -1,6 +1,6 @@
 ## About
 
-This project is a frontend that utilises calls to an API with AI capabilities in order to estimate whether provided crop images show disease.
+This project is a frontend that utilises calls to a FastAPU backend with AI capabilities in order to estimate whether provided crop images show disease.
 
 Deployed at: https://crop-disease-detector-web-app-delta.vercel.app
 

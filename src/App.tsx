@@ -124,7 +124,7 @@ export const App = () => {
     files.forEach((_, i) => {
       formData.append(
         'selected_crop_names_for_images',
-        selectedCropNamesForImages[i] ?? '',
+        selectedCropNamesForImages[i] === '__from_filename__' ? '' : (selectedCropNamesForImages[i] ?? ''),
       );
     });
 

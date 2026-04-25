@@ -42,7 +42,12 @@ export const PreviewGrid = ({
               onChange={(e) => onCropChange(i, e.target.value)}
               className='w-full text-sm rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-300'
             >
-              <option value=''>Get crop name from filename</option>
+              <option value='' disabled hidden>
+                Select the name of the crop
+              </option>
+              <option value='__from_filename__'>
+                Get crop name from filename
+              </option>
               {supportedCrops.map((c) => (
                 <option key={c.crop} value={c.crop.toLowerCase()}>
                   {c.crop}

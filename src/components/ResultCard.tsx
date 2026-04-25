@@ -41,9 +41,14 @@ export const ResultCard = ({ result, supportedCrops }: Props) => {
             const cropInfo = supportedCrops.find((crop) =>
               label.includes(crop.crop),
             );
-            const conditionDescription = cropInfo?.conditions.find(
-              (condition) => label.includes(condition.name),
+            let conditionDescription = cropInfo?.conditions.find((condition) =>
+              label.includes(condition.name),
             )?.description;
+
+            if (label === 'Invalid') {
+              conditionDescription =
+                'Image is an invalid image without a supported crop in it';
+            }
 
             return (
               <PredictionBar
